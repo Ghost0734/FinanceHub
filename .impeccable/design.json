@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T00:00:00+05:30",
+  "title": "Design System: FinPilot AI",
+  "extensions": {
+    "colorMeta": {},
+    "typographyMeta": {},
+    "shadows": [],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "The Finance Control Room",
+    "overview": "FinPilot is a composed, operational workspace for finance teams to assess risk, inspect evidence, and act with confidence. Its current implementation uses Streamlit's native wide-layout interface without project-owned CSS, theme tokens, or bespoke components. The confirmed finance-risk direction is binding for future UI work but remains deliberately un-tokenized until it is implemented.",
+    "keyCharacteristics": [
+      "Wide workflow from overview to investigation to forecast",
+      "Calm, generously spaced decision groups",
+      "Evidence-led risk communication with visible confidence",
+      "Progressive disclosure for policy documentation"
+    ],
+    "rules": [
+      {
+        "name": "The Reserved Severity Rule",
+        "body": "Deep Ledger Navy is the foundation; Signal Teal is for primary actions and positive states. Review Amber and Escalation Red are reserved for risk, exceptions, and required review. Color is never the sole risk indicator.",
+        "section": "colors"
+      },
+      {
+        "name": "The Evidence-First Rule",
+        "body": "Decision context, plain-language explanation, policy evidence, confidence, and next action take priority over decorative type treatment.",
+        "section": "typography"
+      },
+      {
+        "name": "The Earned Elevation Rule",
+        "body": "Resting surfaces stay flat with subtle borders; soft shadows express selected, modal, or action-priority state only.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do design a composed finance-control workspace.",
+      "Do pair material risk with evidence, policy, confidence, and a next action.",
+      "Do use accessible contrast, readable typography, labels, and keyboard-friendly controls."
+    ],
+    "donts": [
+      "Don't use flashy AI motifs, decorative gradients, or glow effects.",
+      "Don't use teal for risk or amber/red as decoration.",
+      "Don't rely on color alone for risk, success, error, or selection."
+    ]
+  }
+}
