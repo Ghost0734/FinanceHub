@@ -1,0 +1,21 @@
+services:
+  backend:
+    image: ghcr.io/ghost0734/financehub-backend:latest
+    restart: unless-stopped
+    expose:
+      - "8000"
+    volumes:
+      - finpilot_chroma:/app/.finpilot_chroma
+    environment:
+      PYTHONUNBUFFERED: "1"
+
+  frontend:
+    image: ghcr.io/ghost0734/financehub-frontend:latest
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  finpilot_chroma:
