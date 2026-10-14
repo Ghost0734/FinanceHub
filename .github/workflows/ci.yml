@@ -126,7 +126,8 @@ jobs:
     name: Deploy to AWS EC2 via SSM
     runs-on: ubuntu-latest
 
-    needs: publish-images
+    needs:
+      - publish-images
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
@@ -135,12 +136,23 @@ jobs:
       id-token: write
 
     steps:
+      # Diagnostic information; does not expose the OIDC token.
+      - name: Verify GitHub OIDC context
+        shell: bash
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+          echo "Event: $GITHUB_EVENT_NAME"
+          echo "Expected OIDC subject: repo:${GITHUB_REPOSITORY}:ref:${GITHUB_REF}"
+
+      # Authenticate with AWS using GitHub OIDC.
       - name: Authenticate with AWS using OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::768807472213:role/FinanceHubGitHubDeployRole
           aws-region: ap-south-1
 
+      # Deploy to the FinanceHub EC2 instance using SSM.
       - name: Deploy FinanceHub through SSM
         shell: bash
         run: |
@@ -193,6 +205,7 @@ jobs:
                 echo "Deployment succeeded."
                 break
                 ;;
+
               Failed|TimedOut|Cancelled|Undeliverable|Terminated)
                 echo "Deployment failed. Fetching command output..."
 
@@ -213,6 +226,8 @@ jobs:
             echo "Deployment did not succeed within the timeout."
             exit 1
           fi
+
+          echo "Final deployment output:"
 
           aws ssm get-command-invocation \
             --command-id "$COMMAND_ID" \
