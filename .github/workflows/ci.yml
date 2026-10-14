@@ -136,14 +136,50 @@ jobs:
       id-token: write
 
     steps:
-      # Diagnostic information; does not expose the OIDC token.
-      - name: Verify GitHub OIDC context
-        shell: bash
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Ref: $GITHUB_REF"
-          echo "Event: $GITHUB_EVENT_NAME"
-          echo "Expected OIDC subject: repo:${GITHUB_REPOSITORY}:ref:${GITHUB_REF}"
+      # Obtain the real GitHub OIDC claims without printing the token.
+      - name: Verify GitHub OIDC claims
+        uses: actions/github-script@v7
+        env:
+          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
+          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
+        with:
+          script: |
+            const tokenUrl = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
+            const requestToken = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
+
+            if (!tokenUrl || !requestToken) {
+              throw new Error("GitHub OIDC request environment is unavailable.");
+            }
+
+            const separator = tokenUrl.includes("?") ? "&" : "?";
+            const response = await fetch(
+              `${tokenUrl}${separator}audience=sts.amazonaws.com`,
+              {
+                headers: {
+                  Authorization: `Bearer ${requestToken}`
+                }
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`OIDC request failed with HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+            const parts = result.value.split(".");
+
+            if (parts.length !== 3) {
+              throw new Error("Received an invalid OIDC token.");
+            }
+
+            const claims = JSON.parse(
+              Buffer.from(parts[1], "base64url").toString("utf8")
+            );
+
+            console.log("Repository:", claims.repository);
+            console.log("Ref:", claims.ref);
+            console.log("Subject:", claims.sub);
+            console.log("Audience:", claims.aud);
 
       # Authenticate with AWS using GitHub OIDC.
       - name: Authenticate with AWS using OIDC
