@@ -6,9 +6,11 @@ import { useSession } from "./app/SessionProvider";
 import { useReportData } from "./lib/useReportData";
 import { api } from "./lib/api";
 import type { SummaryResponse } from "./lib/types";
+import { CsvUploadPanel } from "./components/CsvUploadPanel";
 
 import InvestigationsPage from "./pages/InvestigationsPage";
 import ForecastPage from "./pages/ForecastPage";
+
 
 function OverviewPage() {
   const session = useSession();
@@ -17,7 +19,16 @@ function OverviewPage() {
     data: summary,
     isLoading,
     error,
-  } = useReportData<SummaryResponse>("summary", () => api.summary());
+    reload: reloadSummary,
+  } = useReportData<SummaryResponse>(
+    `summary:${session.version}`,
+    () => api.summary(),
+  );
+
+  const handleUploaded = () => {
+    session.refresh();
+    reloadSummary();
+  };
 
   return (
     <>
@@ -41,6 +52,26 @@ function OverviewPage() {
           where further evidence is needed. Statistical flags are indicators
           for review, not proof of fraud.
         </p>
+
+        <section id="upload" className="scroll-mt-28 pt-12 md:pt-16">
+          <div className="border-t border-line pt-5">
+            <p className="mono-label text-crimson">
+              01.1 / Data ingestion
+            </p>
+
+            <h2 className="mt-3 font-display text-display-md text-navy">
+              Analyze your expense data
+            </h2>
+          </div>
+
+          <div className="mt-6">
+            <CsvUploadPanel
+              currentSource={session.source}
+              currentRows={session.rows}
+              onUploaded={handleUploaded}
+            />
+          </div>
+        </section>
       </main>
     </>
   );
