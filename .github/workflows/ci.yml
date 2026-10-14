@@ -120,7 +120,7 @@ jobs:
           tags: ghcr.io/${{ steps.image-owner.outputs.owner }}/financehub-frontend:latest
 
   # --------------------------------------------------
-    # 4. DEPLOY TO AWS THROUGH SYSTEMS MANAGER
+  # 4. DEPLOY TO AWS THROUGH SYSTEMS MANAGER
   # --------------------------------------------------
   deploy:
     name: Deploy to AWS EC2 via SSM
