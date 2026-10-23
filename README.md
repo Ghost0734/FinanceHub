@@ -13,9 +13,6 @@
   <a href="https://github.com/Ghost0734/FinanceHub">
     <img src="https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github" alt="Source Code"/>
   </a>
-  <a href="https://gitdiagram.com/ghost0734/financehub">
-    <img src="https://img.shields.io/badge/Architecture-Explore-6C5CE7?style=for-the-badge" alt="Architecture Diagram"/>
-  </a>
 </p>
 
 <p align="center">
