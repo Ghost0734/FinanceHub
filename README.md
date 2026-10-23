@@ -26,6 +26,9 @@ streamlit run dashboard.py
 
 Open `http://127.0.0.1:8000/docs` for the interactive API and Streamlit's URL for the dashboard.
 
+## Architecture
+[![Architecture diagram of ghost0734/financehub](https://gitdiagram.com/ghost0734/financehub/diagram.png)](https://gitdiagram.com/ghost0734/financehub?utm_source=readme&utm_medium=picture)
+
 ## API
 
 - `GET /health` – service health
