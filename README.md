@@ -48,6 +48,8 @@ It combines machine learning, policy retrieval, and graph-based investigation wo
 
 The application integrates a React and TypeScript frontend, a FastAPI backend, machine learning services, ChromaDB policy retrieval, and LangGraph investigation orchestration.
 
+https://github.com/user-attachments/assets/63ff7b11-d1b9-48be-892e-bd7fdc47d8cc
+
 ## Features
 
 | Feature | Description |
